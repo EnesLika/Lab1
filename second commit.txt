@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 merge conflict ernest
+=======
+empty commit attempt
+>>>>>>> f738391b154a25937185b3f5b5e19fb8785d7cc4
