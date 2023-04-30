@@ -13,6 +13,11 @@ namespace Persistence
         {
         }
 
-        public DbSet<Activity> Activities { get; set; }
+        public DbSet<User> User { get; set; }
+
+        public DbSet<Admin> Admin { get; set; }
+
+        public DbSet<News> News { get; set; }
+        
     }
 }
