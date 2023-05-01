@@ -8,22 +8,33 @@ import NewsForm from './Form/NewsForm';
 interface Props {
     newss: News[];
     selectedNews: News | undefined;
-    selectNews: (newsId: string) => void;
-    cancelSelectNews: () =>  void;
+    selectNews: (newsId: number) => void;
+    cancelSelectNews: () => void;
+    editMode: boolean;
+    openForm: (newsId: number) => void;
+    closeForm: () => void;
+    createOrEdit: (news: News) => void;
+
 }
 
-export default function NewsDashboard({newss, selectedNews, selectNews, cancelSelectNews}: Props){
-    return(
+export default function NewsDashboard({ newss, selectedNews,
+    selectNews, cancelSelectNews, editMode, openForm, closeForm, createOrEdit }: Props) {
+    return (
         <Grid>
             <Grid.Column width='10'>
-                <NewsList newss={newss} selectNews={selectNews}/>
+                <NewsList newss={newss} selectNews={selectNews} />
             </Grid.Column>
             <Grid.Column width='6'>
-                {selectedNews &&
-                <NewsDetails news={selectedNews} cancelSelectNews={cancelSelectNews} /*selectNews={selectNews}*/ selectedNews={undefined} selectNews={function (newsId: string): void {
-                    throw new Error('Function not implemented.');
-                } } /*selectNews={selectNews}*//>}
-                <NewsForm/>
+                {selectedNews && !editMode &&
+                    <NewsDetails
+                        news={selectedNews}
+                        cancelSelectNews={cancelSelectNews}
+                        openForm={openForm}
+                    /*selectNews={selectNews}*/
+                    />}
+
+                {editMode &&
+                    <NewsForm closeForm={closeForm} news={selectedNews} createOrEdit={createOrEdit}/>}
             </Grid.Column>
         </Grid>
     )

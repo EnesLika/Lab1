@@ -7,37 +7,61 @@ import NewsDashboard from '../../Features/News/Dashboard/NewsDashboard';
 
 
 function App() {
-  const [newss, setAdmins] = useState<News[]>([]);
+  const [newss, setNewss] = useState<News[]>([]);
   const [selectedNews, setSelectedNews] = useState<News | undefined>(undefined);
+  const [editMode, setEditMode] = useState(false);
+
 
   useEffect(() => {
     axios.get<News[]>('http://localhost:5000/api/news').then(response => {
-      console.log(response);
-      setAdmins(response.data);
+      setNewss(response.data);
     })
   }, [])
 
-  function handleSelectedNews(newsId: string){
-    setSelectedNews(newss.find(x => x.id == newsId));
+  function handleSelectNews(newsId: number) {
+    setSelectedNews(newss.find(x => x.newsId == newsId));
   }
 
-  function handleCancelSelectedNews(){
+  function handleCancelSelectedNews() {
     setSelectedNews(undefined);
   }
 
-  return ( 
+  function handleFormOpen(newsId?: number) {
+    newsId ? handleSelectNews(newsId) : handleCancelSelectedNews();
+    setEditMode(true);
+  }
+
+  function handleFormClose() {
+    setEditMode(false);
+  }
+
+  function handleCreateOrEditNews(news: News){
+    news.newsId 
+    ? setNewss([...newss.filter(x => x.newsId !== news.newsId), news])
+    : setNewss([...newss, news]);
+    setEditMode(false);
+    setSelectedNews(news);
+  }
+
+
+  return (
     <Fragment>
-       <NavBar/>
-       <Container style={{marginTop: '7em'}}>
-          <NewsDashboard
-            newss={newss}
-            selectedNews={selectedNews}
-            selectNews={handleSelectedNews}
-            cancelSelectNews={handleCancelSelectedNews}
-          />
-        </Container>
+      <NavBar openForm={handleFormOpen} />
+      <Container style={{ marginTop: '7em' }}>
+        <NewsDashboard
+          newss={newss}
+          selectedNews={selectedNews}
+          selectNews={handleSelectNews}
+          cancelSelectNews={handleCancelSelectedNews}
+          editMode={editMode}
+          openForm={handleFormOpen}
+          closeForm={handleFormClose}
+          createOrEdit={handleCreateOrEditNews}
+        />
+      </Container>
     </Fragment>
   );
 }
 
 export default App;
+
