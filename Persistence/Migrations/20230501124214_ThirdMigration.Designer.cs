@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230430182144_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230501124214_ThirdMigration")]
+    partial class ThirdMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,7 +63,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("newsId");
 
-                    b.ToTable("News");
+                    b.ToTable("Newss");
                 });
 
             modelBuilder.Entity("Domain.User", b =>

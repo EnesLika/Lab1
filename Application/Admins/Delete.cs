@@ -25,10 +25,9 @@ namespace Application.Admins
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var dbAdmin = await _context.Admins.FindAsync(request.adminId);
+                var dbManager = await _context.Admins.FindAsync(request.adminId);
             
-                _context.Remove(dbAdmin);
-                
+                _context.Remove(dbManager);
                 await _context.SaveChangesAsync();
                 
                 return Unit.Value;

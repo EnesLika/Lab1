@@ -61,7 +61,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("newsId");
 
-                    b.ToTable("News");
+                    b.ToTable("Newss");
                 });
 
             modelBuilder.Entity("Domain.User", b =>

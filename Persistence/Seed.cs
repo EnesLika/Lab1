@@ -27,6 +27,21 @@ namespace Persistence
                 };
             await context.Admins.AddRangeAsync(admins);
             await context.SaveChangesAsync();
+
+            var users = new List<User>
+                {
+                    new User {
+                        userName = "user1",
+                        userEmail = "user@user.com",
+                        userPassword = "user123",
+                        FirstName = "John",
+                        LastName = "Smith"
+                    }
+                };
+
+            await context.Users.AddRangeAsync(users);
+            await context.SaveChangesAsync();
+            
         }
     }
 }

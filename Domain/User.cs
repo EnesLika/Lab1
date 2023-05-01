@@ -9,15 +9,15 @@ namespace Domain
     {
         public int userId { get; set; }
 
-        public string userName { get; set; }
+        public string userName { get; set; } = string.Empty;
 
-        public string userEmail { get; set; }
+        public string userEmail { get; set; } = string.Empty;
 
-        public string userPassword { get; set; }
+        public string userPassword { get; set; } = string.Empty;
 
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
 
-        public string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
 
         public DateTime Birthday { get; set; }
 

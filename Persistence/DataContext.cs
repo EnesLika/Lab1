@@ -17,7 +17,7 @@ namespace Persistence
 
         public DbSet<Admin> Admins { get; set; }
 
-        public DbSet<News> News { get; set; }
+        public DbSet<News> Newss { get; set; }
         
     }
 }
