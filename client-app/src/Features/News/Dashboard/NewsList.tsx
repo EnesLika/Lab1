@@ -7,9 +7,10 @@ import NewsDetails from './Details/NewsDetails';
 interface Props {
     newss: News[];
     selectNews: (newsId: number) => void;
+    deleteNews: (newsId: number) => void;
 }
 
-export default function NewsList({ newss, selectNews }: Props) {
+export default function NewsList({ newss, selectNews, deleteNews }: Props) {
     return (
         <Segment>
             <Item.Group divided>
@@ -17,15 +18,15 @@ export default function NewsList({ newss, selectNews }: Props) {
                     <Item key={news.newsId}>
                         <Item.Content>
                             <Item.Header as='a'>{news.newsHeadline}</Item.Header>
-                            <Item.Meta>{news.newsUploadTime}</Item.Meta>
+                            <Item.Meta>ID = {news.newsId}</Item.Meta>
                             <Item.Description>
                                 <div>{news.newsDescription}</div>
                                 <div>{news.newsImage}</div>
-
                             </Item.Description>
                             <Item.Extra>
-                                <Button onClick={() => selectNews(news.newsId)} floated='right' content='view' color='blue' />
-                                <Label basic content={news.newsHeadline} />
+                                <Button onClick={() => selectNews(news.newsId)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => deleteNews(news.newsId)} floated='right' content='Delete' color='red' />
+                                <Label basic content={news.newsUploadTime} />
                             </Item.Extra>
 
 

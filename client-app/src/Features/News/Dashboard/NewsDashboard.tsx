@@ -14,15 +14,21 @@ interface Props {
     openForm: (newsId: number) => void;
     closeForm: () => void;
     createOrEdit: (news: News) => void;
-
+    deleteNews: (newsId: number) => void;
+    submitting: boolean;
 }
 
 export default function NewsDashboard({ newss, selectedNews,
-    selectNews, cancelSelectNews, editMode, openForm, closeForm, createOrEdit }: Props) {
+    selectNews, cancelSelectNews, editMode, openForm, closeForm,
+     createOrEdit, deleteNews, submitting }: Props) {
     return (
         <Grid>
             <Grid.Column width='10'>
-                <NewsList newss={newss} selectNews={selectNews} />
+                <NewsList newss={newss} 
+                selectNews={selectNews} 
+                deleteNews={deleteNews}
+
+                />
             </Grid.Column>
             <Grid.Column width='6'>
                 {selectedNews && !editMode &&
@@ -34,7 +40,12 @@ export default function NewsDashboard({ newss, selectedNews,
                     />}
 
                 {editMode &&
-                    <NewsForm closeForm={closeForm} news={selectedNews} createOrEdit={createOrEdit}/>}
+                    <NewsForm 
+                        closeForm={closeForm} 
+                        news={selectedNews} 
+                        createOrEdit={createOrEdit}
+                        submitting={submitting}
+                    />}
             </Grid.Column>
         </Grid>
     )

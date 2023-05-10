@@ -15,7 +15,7 @@ namespace API.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        public async Task<ActionResult<List<User>>> GetAllUser()
         {
             return await Mediator.Send(new List.Query());
         }
@@ -27,16 +27,16 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(User user)
+        public async Task<IActionResult> AddUser(User User)
         {    
-            return Ok(await Mediator.Send(new Create.Command{Users = user}));
+            return Ok(await Mediator.Send(new Create.Command{Users = User}));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User updateuser)
+        public async Task<IActionResult> UpdateUser(int id, User updateUser)
         {
-           updateuser.userId = id;
-           return Ok(await Mediator.Send(new Edit.Command{Users=updateuser}));
+           updateUser.userId = id;
+           return Ok(await Mediator.Send(new Edit.Command{Users=updateUser}));
         }
 
         [HttpDelete("{id}")]

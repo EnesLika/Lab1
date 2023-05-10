@@ -1,20 +1,29 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import axios from 'axios';
 import { Container, Header, List } from 'semantic-ui-react';
 import { News } from './models/news';
 import NavBar from './navbar';
 import NewsDashboard from '../../Features/News/Dashboard/NewsDashboard';
-
+import newsAgent from '../api/newsAgent';
+import LoadingComponent from './LoadingComponent';
+//import { maxNewsId, nextNewsId } from '../..';
 
 function App() {
   const [newss, setNewss] = useState<News[]>([]);
   const [selectedNews, setSelectedNews] = useState<News | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
 
   useEffect(() => {
-    axios.get<News[]>('http://localhost:5000/api/news').then(response => {
-      setNewss(response.data);
+    newsAgent.Newss.list().then(response => {
+      let newss: News[] = [];
+      response.forEach((news: News) => {
+        news.newsUploadTime = news.newsUploadTime.split('T')[0];
+        newss.push(news);
+      })
+      setNewss(response);
+      setLoading(false);
     })
   }, [])
 
@@ -36,19 +45,46 @@ function App() {
   }
 
   function handleCreateOrEditNews(news: News){
-    news.newsId 
-    ? setNewss([...newss.filter(x => x.newsId !== news.newsId), news])
-    : setNewss([...newss, news]);
-    setEditMode(false);
-    setSelectedNews(news);
+    setSubmitting(true);
+    if (news.newsId){
+      newsAgent.Newss.update(news).then(() => {
+        setNewss([...newss.filter(x => x.newsId !== news.newsId), news])
+        setSelectedNews(news);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    } else {
+      
+
+      news.newsId = 10; /*Somehow get max value from newsId, maybe sqlquery*/
+      newsAgent.Newss.create(news).then(() => {
+        setNewss([...newss, news])
+        setSelectedNews(news);
+        setEditMode(false);
+        setSubmitting(false);
+
+        //var maxNewsId= nextNewsId;
+      })
+    }
   }
 
+  function handleDeleteNews(newsId: number){
+    setSubmitting(true);
+    newsAgent.Newss.delete(newsId).then(() => {
+      setNewss([...newss.filter(x => x.newsId !== newsId)])
+      setSubmitting(false);
+    })
+    
+  }
+
+  if (loading) return <LoadingComponent content='Loading app'/>
 
   return (
     <Fragment>
       <NavBar openForm={handleFormOpen} />
       <Container style={{ marginTop: '7em' }}>
         <NewsDashboard
+          
           newss={newss}
           selectedNews={selectedNews}
           selectNews={handleSelectNews}
@@ -57,6 +93,8 @@ function App() {
           openForm={handleFormOpen}
           closeForm={handleFormClose}
           createOrEdit={handleCreateOrEditNews}
+          deleteNews={handleDeleteNews}
+          submitting={submitting}
         />
       </Container>
     </Fragment>
@@ -64,4 +102,6 @@ function App() {
 }
 
 export default App;
+
+
 

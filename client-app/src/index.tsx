@@ -5,6 +5,12 @@ import './App/layout/style.css';
 import App from './App/layout/App';
 import reportWebVitals from './reportWebVitals';
 
+/*
+var maxNewsId = 7;
+var nextNewsId = maxNewsId++;
+
+export { maxNewsId, nextNewsId};
+*/
 
 
 

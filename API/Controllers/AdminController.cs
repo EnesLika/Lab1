@@ -11,11 +11,11 @@ using Application.Admins;
 
 namespace API.Controllers
 {
-    public class AdminsController : BaseApiController
+    public class AdminController : BaseApiController
     {
 
         [HttpGet]
-        public async Task<ActionResult<List<Admin>>> GetAllAdmins()
+        public async Task<ActionResult<List<Admin>>> GetAllAdmin()
         {
             return await Mediator.Send(new List.Query());
         }
@@ -27,16 +27,16 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAdmin(Admin admin)
+        public async Task<IActionResult> AddAdmin(Admin Admin)
         {    
-            return Ok(await Mediator.Send(new Create.Command{Admins = admin}));
+            return Ok(await Mediator.Send(new Create.Command{Admins = Admin}));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAdmin(int id, Admin updateadmin)
+        public async Task<IActionResult> UpdateAdmin(int id, Admin updateAdmin)
         {
-           updateadmin.adminId = id;
-           return Ok(await Mediator.Send(new Edit.Command{Admins=updateadmin}));
+           updateAdmin.adminId = id;
+           return Ok(await Mediator.Send(new Edit.Command{Admins=updateAdmin}));
         }
 
         [HttpDelete("{id}")]
