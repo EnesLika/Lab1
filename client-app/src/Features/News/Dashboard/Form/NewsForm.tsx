@@ -1,22 +1,23 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Form, Segment } from 'semantic-ui-react';
-import { News } from '../../../../App/layout/models/news';
+import { useStore } from '../../../../App/stores/store';
+import { observer } from 'mobx-react-lite';
 //import { maxNewsId, nextNewsId } from '../../../..';
 
 
-interface Props {
-    news: News | undefined;
-    closeForm: () => void;
-    createOrEdit: (news: News) => void;
-    submitting: boolean;
-}
+export default observer(function NewsForm(){
 
-export default function NewsForm({ news: selectedNews, closeForm,
-     createOrEdit, submitting }: Props) {
-    
+    const {newsStore} = useStore();
+    const {selectedNews, selectedNewsce, closeForm, createNews, updateNews, loading } = newsStore;
 
+    const initialStatece = selectedNewsce ?? {
+        newsHeadline: '',
+        newsImage: '',
+        newsUploadTime: '',
+        newsDescription: '',
+    }
     const initialState = selectedNews ?? {
-        newsId: 10, /*Somehow get max value from newsId, maybe sqlquery*/
+        newsId: 0,
         newsHeadline: '',
         newsImage: '',
         newsUploadTime: '',
@@ -24,15 +25,17 @@ export default function NewsForm({ news: selectedNews, closeForm,
     }
 
     const [news, setNews] = useState(initialState);
+    const [newsce, setNewsce] = useState(initialStatece);
 
     function handleSubmit() {
-        createOrEdit(news);
+        news.newsId ? updateNews(news) : createNews(newsce);
     }
+    
+    function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
+        const {name, value} = event.target;
+        setNews({...news, [name]:value })
+        setNewsce({...newsce, [name]:value })
 
-
-    function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        const { name, value } = event.target;
-        setNews({ ...news, [name]: value })
     }
 
     return (
@@ -43,9 +46,9 @@ export default function NewsForm({ news: selectedNews, closeForm,
                 <Form.Input type='date' placeholder='Time of creation' value={news.newsUploadTime} name='newsUploadTime' onChange={handleInputChange} />
                 <Form.Input placeholder='Description' value={news.newsDescription} name='newsDescription' onChange={handleInputChange} />
 
-                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
+                <Button loading={loading} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='submit' content='Cancel' />
             </Form>
         </Segment>
     )
-}
+})

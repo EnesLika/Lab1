@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { News } from '../layout/models/news';
+import { Newsce } from '../layout/models/newsce';
 
 
 const sleep = (delay: number) => {
@@ -7,6 +8,7 @@ const sleep = (delay: number) => {
         setTimeout(resolve, delay)
     })
 }
+
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -33,7 +35,7 @@ const requests = {
 const Newss = {
     list: () => requests.get<News[]>('/news'),
     details: (newsId: number) => requests.get<News>(`/news/${newsId}`),
-    create: (news: News) => axios.post<void>('/news', news),
+    create: (newsce: Newsce) => axios.post<void>('/news', newsce),
     update: (news: News) => axios.put<void>(`/news/${news.newsId}`, news),
     delete: (newsId: number) => axios.delete<void>(`/news/${newsId}`)
 }

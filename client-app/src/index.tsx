@@ -4,6 +4,7 @@ import 'semantic-ui-css/semantic.min.css';
 import './App/layout/style.css';
 import App from './App/layout/App';
 import reportWebVitals from './reportWebVitals';
+import { StoreContext, store } from './App/stores/store';
 
 /*
 var maxNewsId = 7;
@@ -18,7 +19,10 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-    <App />
+    <StoreContext.Provider value={store}>
+          <App />
+    </StoreContext.Provider>
+
 );
 
 
